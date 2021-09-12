@@ -1,16 +1,15 @@
 #include<iostream>
-#include<vector>
 #include<stack>
 using namespace std;
 
-int t, n;
+int t;
 int main() {
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 	cin >> t;
 	while (t--) {
-		int minValue = 100001, maxValue = -1;
 		stack<int> minStack;
 		stack<int> maxStack;
+		int n;
 		cin >> n;
 		while (n--) {
 			int q;			
@@ -20,29 +19,39 @@ int main() {
 			if (q == 1) {
 				int num;
 				cin >> num;
-				if (num > maxValue) {
-					maxValue = num;
-					maxStack.push(maxValue);
-				}
-				else {
-					int temp1 = maxStack.top();
-					maxStack.push(temp1);
-				}
 
-				if (num < minValue) {
-					minValue = num;
-					minStack.push(minValue);
+				//스택이 비었을 경우
+				if (minStack.empty()) {
+					maxStack.push(num);
+					minStack.push(num);
 				}
 				else {
-					int temp2 = minStack.top();
-					minStack.push(temp2);
-				}
+					//최대값 스택
+					if (num > maxStack.top()) {
+						maxStack.push(num);
+					}
+					else {
+						maxStack.push(maxStack.top());
+					}
+
+					//최소값 스택
+					if (num < minStack.top()) {
+						minStack.push(num);						
+					}
+					else {
+						minStack.push(minStack.top());
+					}
+				}											
+				
 				cout << minStack.top() << " " << maxStack.top() << "\n";
 			}
+
 			//빼기
-			else {				
-				minStack.pop();
-				maxStack.pop();
+			else {		
+				if (!minStack.empty()) {
+					minStack.pop();
+					maxStack.pop();
+				}				
 			}
 		}
 	}
